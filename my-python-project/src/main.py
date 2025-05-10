@@ -1,47 +1,35 @@
-from collect_forecast_data import collect_forecast_data
-from airQualiy import get_air_quality_data
-from solarAngle import calculate_solar_angle
+from data_collection.collect_forecast_data import collect_forecast_data
+from data_collection.air_qualiy import get_air_quality_data
+from data_collection.solar_angle import calculate_solar_angle
+from db.db_connection import create_connection, close_connection
+from data_processing.merge_data import merge_data_by_time
+from data_processing.clean_data import remove_outside_data
+from data_processing.augment_data import extend_df
 import pandas as pd
 if __name__ == "__main__":
   # Example usage
   latitude = 55.6761  # Example latitude (Copenhagen)
   longitude = 12.5683  # Example longitude (Copenhagen)
-  start_date = "2025-05-07"  # Example start date
-  end_date = "2025-05-08"    # Example end date
+  start_date = "2025-05-10"  # Example start date
+  end_date = "2025-05-11"    # Example end date
   timezone = "Europe/Copenhagen"
+  
   try:
     forecast_data = collect_forecast_data(latitude, longitude, start_date, end_date, timezone)
-    #Prepare the forecast data
-    forecast_df = pd.DataFrame(forecast_data)
-    # Convert 'time' column to datetime
-    forecast_df['time'] = pd.to_datetime(forecast_df['time'])
-    forecast_df.set_index('time', inplace=True)
-    #This interpolates the data to 10-minute intervals
-    forecast_df = forecast_df.resample('10min').interpolate(method='linear')
-   
     air_quality_data = get_air_quality_data(latitude, longitude, start_date, end_date,timezone)
-    #Prepare the air quality data
-    air_quality_df = pd.DataFrame(air_quality_data)
-    air_quality_df['time'] = pd.to_datetime(air_quality_df['time'])
-    air_quality_df.set_index('time', inplace=True)
-    #This interpolates the data to 10-minute intervals
-    air_quality_df = air_quality_df.resample('10min').interpolate(method='linear')
-    print(air_quality_df)
-
-    solar_angle = calculate_solar_angle(latitude, longitude, start_date, end_date, timezone)
-    #Prepare the sola angle data
-    solar_angle_df = pd.DataFrame(solar_angle)
-    solar_angle_df.reset_index(inplace=True)
-    solar_angle_df.rename(columns={"index": "time"}, inplace=True)
-    solar_angle_df['time'] = pd.to_datetime(solar_angle_df['time']).dt.tz_localize(None)
+    solar_angle_data = calculate_solar_angle(latitude, longitude, start_date, end_date, timezone)
     
-    # Merge the three DataFrames on the 'time' column
-    merged_df = pd.merge(forecast_df, air_quality_df, on="time", how="inner")
-    merged_df = pd.merge(merged_df, solar_angle_df, on="time", how="inner")
-    
-    print(merged_df)
+    merged_df = merge_data_by_time(forecast_data, air_quality_data, solar_angle_data)
+    data = remove_outside_data(merged_df)
+    extended_df = extend_df(data)
+    conn = create_connection()
+    data.to_sql('weather_data', conn, if_exists="append", index=False)
+    close_connection(conn)
     
   except Exception as e:
-    #save on db logs
-    print(f"An error occurred: {e}")
+    #Save the error to the database
+    conn = create_connection()
+    error_df = pd.DataFrame({"error": [str(e)], "timestamp": [pd.Timestamp.now()]})
+    error_df.to_sql('error_log', conn, if_exists="append", index=False)
+    close_connection(conn)
   
