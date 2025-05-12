@@ -42,8 +42,9 @@ def extend_df(df:pd.DataFrame)->pd.DataFrame:
       pd.DataFrame: The extended DataFrame.
   """
   # Create a new column with the hash of the DataFrame
-  df = create_column_df(df, "hash", df.apply(hash_row, axis=1))
-  df = create_column_df(df, "web_prediction", pd.Series([pd.NA] * len(df), dtype="Float64"))
-  df = create_column_df(df, "third_party_score", pd.Series([pd.NA] * len(df), dtype="Float64"))
+  #df = create_column_df(df, "hash", df.apply(hash_row, axis=1))
+  #df = create_column_df(df, "web_prediction", pd.Series([pd.NA] * len(df), dtype="Float64"))
+  #df = create_column_df(df, "time_before", df["time"] - pd.Timestamp.now())
+  #df = create_column_df(df, "third_party_score", pd.Series([pd.NA] * len(df), dtype="Float64"))
 
   return df

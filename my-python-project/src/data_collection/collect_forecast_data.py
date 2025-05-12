@@ -1,7 +1,7 @@
 
 
 """
-This module collects forecast data from the Open-Meteo API.
+This module collects forecast data from the External API.
 It retrieves:
 - daily data for:
   - shortwave radiation sum (MJ/m²);
@@ -20,11 +20,16 @@ It retrieves:
 The results are ready to save in a database.
 """
 import requests
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, timezone:str) -> dict:
-  
+  base_url = os.getenv("FORECAST_API_URL")
   API_URL = (
-    "https://api.open-meteo.com/v1/forecast"
+    f'{base_url}'
     f"?latitude={lat}"
     f"&longitude={long}"
     f"&daily=shortwave_radiation_sum"
@@ -66,6 +71,8 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
         # Create a structured dictionary to return
         final_data = {
           "time": time,
+          "latitude": lat,
+          "longitude": long,
           "shortwave_radiation_sum": shortwave_radiation_sum,
           "cloud_cover": cloud_cover,
           "cloud_cover_low": cloud_cover_low,

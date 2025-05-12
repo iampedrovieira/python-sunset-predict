@@ -1,6 +1,6 @@
 import pandas as pd
 
-def merge_data_by_time(forecast_raw, air_quality_raw, solar_angle_raw):
+def merge_data_by_time(forecast_raw, air_quality_raw, solar_angle_raw,third_party):
   """
   Merge the forecast, air quality, and solar angle data by time.
 
@@ -8,6 +8,7 @@ def merge_data_by_time(forecast_raw, air_quality_raw, solar_angle_raw):
       forecast_raw : Raw forecast data
       air_quality_raw : Raw air quality data
       solar_angle_raw : Raw solar angle data
+      third_party : DF third party data
   Returns:
       pd.DataFrame: The merged DataFrame.
   """
@@ -35,6 +36,8 @@ def merge_data_by_time(forecast_raw, air_quality_raw, solar_angle_raw):
 
   merged_df = pd.merge(forecast_df, air_quality_df, on="time", how="inner")
   merged_df = pd.merge(merged_df, solar_angle_df, on="time", how="inner")
+  merged_df = pd.merge(merged_df, third_party, on="time", how="left")
+  #Prepare the third party data
 
   return merged_df
 

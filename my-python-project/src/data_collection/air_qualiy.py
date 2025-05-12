@@ -1,7 +1,10 @@
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 """
-This module collects air quality data from the Open-Meteo API.
+This module collects air quality data from the External API.
 It retrieves hourly data for:
   - PM10 (μg/m³);
   - PM2.5 (μg/m³);
@@ -14,9 +17,10 @@ The results are ready to save in a database.
 """
 
 def get_air_quality_data(latitude: float, longitude: float, start_date: str, end_date: str, timezone: str) -> dict: 
-  
+  base_url = os.getenv("AIR_QUALITY_API_URL")
+
   api_url = (
-    f"https://air-quality-api.open-meteo.com/v1/air-quality"
+    f'{base_url}'
     f"?latitude={latitude}"
     f"&longitude={longitude}"
     f"&start_date={start_date}"
