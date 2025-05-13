@@ -1,10 +1,17 @@
+# Use the official Python image
 FROM python:3.9-slim
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Install any additional tools you might need (optional)
-RUN apt-get update && apt-get install -y vim
+# Copy the current directory contents into the container
+COPY ./my-python-project/ /app
 
-# Default command to keep the container running
-CMD ["tail", "-f", "/dev/null"]
+# Install dependencies (if any)
+RUN pip install --no-cache-dir python-dotenv
+
+# Set environment variables (optional, or use a .env file)
+ENV TEST_FILE_NAME=test_file
+
+# Run the Python script
+CMD ["python", "src/test.py"]
