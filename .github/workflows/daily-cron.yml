@@ -7,6 +7,7 @@ on:
 
 jobs:
   run-script:
+    if: github.actor != 'github-actions' # Prevents the workflow from running if triggered by the bot itself
     runs-on: ubuntu-latest
 
     steps:
@@ -72,4 +73,4 @@ jobs:
           git add .
           git commit -m "Test Commit submodule $(date)"
           # Push changes to the branch
-          git push origin main
+          #git push origin main
