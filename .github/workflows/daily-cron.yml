@@ -46,7 +46,7 @@ jobs:
           -e GEONEAR_API_URL=$GEONEAR_API_URL \
           -v ${{ github.workspace }}/my-python-project:/app main-app
          echo "exit_code=$?" >> $GITHUB_OUTPUT
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Warn on controlled error
         if: steps.run_script.outputs.exit_code == '2'
