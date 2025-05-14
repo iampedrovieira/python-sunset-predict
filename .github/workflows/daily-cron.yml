@@ -1,3 +1,4 @@
+
 name: Daily Python Script
 
 on:
@@ -7,9 +8,8 @@ on:
 
 jobs:
   run-script:
-    if: github.actor != 'github-actions' # Prevents the workflow from running if triggered by the bot itself
+    if: github.actor != 'github-actions'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -67,10 +67,10 @@ jobs:
           git config user.email "github-actions@github.com"
           # Ensure we are on a branch (e.g., 'main')
           git checkout main || git checkout -b main
-          git remote set-url origin https://x-access-token:${GH_PAT_SUNSET}@github.com/${{ github.repository }}
+           git remote set-url origin https://x-access-token:${GH_PAT_SUNSET}@github.com/iampedrovieira/sunset-data-folder.git
           # Pull the latest changes from the remote branch
           git pull origin main --rebase
           git add .
           git commit -m "Test Commit submodule $(date)"
-          # Push changes to the branch
-          #git push origin main
+          #Push changes to the branch
+          git push origin main
