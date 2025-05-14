@@ -53,11 +53,11 @@ if __name__ == "__main__":
   if full_data.empty:
     print("No data collected.")
     error_number = 1 #Error
-    #sys.exit(error_number)
+    sys.exit(error_number)
   if len(full_data) < 12000:
     print("Data is too small.")
     error_number = 3#Warning
   conn = create_connection(f'./data/data-{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.db')
   full_data.to_sql('weather_data', conn, if_exists="append", index=False)
   close_connection(conn)
-  #sys.exit(error_number)
+  sys.exit(error_number)
