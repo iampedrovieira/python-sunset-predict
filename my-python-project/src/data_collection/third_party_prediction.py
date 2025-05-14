@@ -30,7 +30,6 @@ def get_prediction_from_third_party_api(
   }
   
   API_KEY = os.getenv("THIRD_PARTY_API_KEY")
-  print(f"API_KEY: {API_KEY}")
   headers = {
     "x-api-key": API_KEY
   }
@@ -49,8 +48,13 @@ def get_prediction_from_third_party_api(
         golden_start = data['data'][x]['magics']['golden_hour'][0]
         golden_end = data['data'][x]['magics']['golden_hour'][1]
         #When is sunrise the blue hour comes first and when is sunset the golden hour comes first
-        time_period_start = min(blue_start, golden_start)
-        time_period_end = max(blue_end, golden_end)
+        #API Send some none values, for now we will ignore them
+        try:
+          time_period_start = min(blue_start, golden_start)
+          time_period_end = max(blue_end, golden_end)
+        except Exception as e:
+          print(f"Error processing time periods: {e}")
+          continue
         #Create a dataframe with the data for the time period
         # Convert from UTC to the target timezone and remove timezone info
         time_period_start = datetime.fromisoformat(time_period_start.replace("Z", "+00:00")).astimezone(target_timezone).replace(tzinfo=None)
@@ -67,6 +71,9 @@ def get_prediction_from_third_party_api(
         while current_time <= time_period_end:
           rows.append({"time": current_time.strftime("%Y-%m-%d %H:%M:%S"), "third_party_prediction": quality})
           current_time += timedelta(minutes=10)  # Increment by 10 minutes
+    # Check if rows is empty
+    if not rows:
+      raise Exception('No data found on 3rd party API')
     df = pd.DataFrame(rows)
     df['time'] = pd.to_datetime(df['time']).dt.tz_localize(None)
     return df
