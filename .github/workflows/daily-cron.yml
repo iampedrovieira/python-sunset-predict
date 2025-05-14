@@ -59,7 +59,7 @@ jobs:
       
       - name: Commit and push DB
         env:
-          GH_PAT_SUNSET: ${{ secrets.COMMIT_TOKET }}
+          GH_PAT_SUNSET: ${{ secrets.GH_PAT_SUNSET }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
