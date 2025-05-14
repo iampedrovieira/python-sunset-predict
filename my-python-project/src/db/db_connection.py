@@ -2,10 +2,9 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 
-def create_connection():
+def create_connection(db_file: str):
   """ create a database connection to a SQLite database """
   conn = None
-  db_file = f'./data/data-{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.db'
   # Check if the database file exists
   try:
       conn = sqlite3.connect(db_file)
