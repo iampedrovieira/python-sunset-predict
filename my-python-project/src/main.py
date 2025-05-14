@@ -15,12 +15,13 @@ import pandas as pd
 if __name__ == "__main__":
   
   full_data = pd.DataFrame()
-  # Connect to the SQLite database
-  #conn = sqlite3.connect('./data/europe_locations.db')
+  #Connect to the SQLite database
+  conn = sqlite3.connect('./data/europe_locations.db')
   # Read the 'locations' table into a DataFrame
-  #locations_df = pd.read_sql('SELECT * FROM locations', conn)
+  locations_df = pd.read_sql('SELECT * FROM locations', conn)
   # Close the connection
-  #conn.close()
+  conn.close()
+  print(locations_df)
   for index in range(1):#locations_df.iterrows():
     #print('Process: '+row['name'])
     latitude =  55.692293896 #float(row['latitude'])
