@@ -20,12 +20,6 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .
-      
-      - name: Debug workspace
-        run: ls -R ${{ github.workspace }}
-
-      - name: List Docker images
-        run: docker images
         
       - name: Run script
         env:
@@ -46,7 +40,7 @@ jobs:
           -e GEOSEARCH_API_URL=$GEOSEARCH_API_URL \
           -e GEONEAR_API_URL=$GEONEAR_API_URL \
           -v ${{ github.workspace }}/my-python-project:/app main-app
-        continue-on-error: false
+        continue-on-error: true
       
       - name: Capture exit code
         run: echo "exit_code=$?" >> $GITHUB_ENV
