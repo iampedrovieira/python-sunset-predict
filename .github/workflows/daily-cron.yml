@@ -64,7 +64,12 @@ jobs:
           cd my-python-project/src/data/
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+          
+          # Ensure we are on a branch (e.g., 'main')
+          git checkout main || git checkout -b main
+
           git remote set-url origin https://x-access-token:${GH_PAT_SUNSET}@github.com/${{ github.repository }}
           git add .
           git commit -m "Test Commit submodule $(date)"
-          git push
+          # Push changes to the branch
+          git push origin main
