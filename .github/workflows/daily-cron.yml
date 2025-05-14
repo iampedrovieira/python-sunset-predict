@@ -20,7 +20,13 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .
+      
+      - name: Debug workspace
+        run: ls -R ${{ github.workspace }}
 
+      - name: List Docker images
+        run: docker images
+        
       - name: Run script
         env:
           THIRD_PARTY_API_KEY: ${{ secrets.THIRD_PARTY_API_KEY }}
