@@ -46,8 +46,9 @@ jobs:
         run: echo "exit_code=$?" >> $GITHUB_ENV
 
       - name: Warn on controlled error
-        if: env.exit_code == '2'
+        if: env.exit_code == '0'
         run: echo "::warning ::Low data!"
+             exit 0
 
       - name: Fail on unexpected error
         if: env.exit_code == '1'
