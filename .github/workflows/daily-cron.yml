@@ -2,9 +2,8 @@
 name: Daily Python Script
 
 on:
-  push:  # Trigger the workflow on push to the repository
-    branches:
-      - main  # Specify the branch to watch (e.g., 'main')
+  scheduled:
+    - cron: '0 17 * * *' #
 
 jobs:
   run-script:

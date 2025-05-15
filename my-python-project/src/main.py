@@ -11,6 +11,7 @@ import sqlite3
 import pandas as pd
 from datetime import datetime
 import sys
+import time 
 
 import pandas as pd
 if __name__ == "__main__":
@@ -19,10 +20,11 @@ if __name__ == "__main__":
   #Connect to the SQLite database
   conn = sqlite3.connect('./data/europe_locations.db')
   # Read the 'locations' table into a DataFrame
-  locations_df = pd.read_sql('SELECT * FROM locations', conn)
+  locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
   for index,row in locations_df.iterrows():
+    time.sleep(1.5)#To prevent the API from being blocked
     print('Process: '+row['name'])
     latitude = float(row['latitude'])
     longitude = float(row['longitude'])
@@ -57,7 +59,7 @@ if __name__ == "__main__":
     print("No data collected.")
     error_number = 1 #Error
     sys.exit(error_number)
-  if len(full_data) < 12000:
+  if len(full_data) < 5000:
     print("Data is too small.")
     error_number = 0#Warning
   conn = create_connection(f'./data/data-{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.db')
