@@ -11,7 +11,6 @@ import sqlite3
 import pandas as pd
 from datetime import datetime
 import sys
-import time 
 
 import pandas as pd
 if __name__ == "__main__":
@@ -20,11 +19,11 @@ if __name__ == "__main__":
   #Connect to the SQLite database
   conn = sqlite3.connect('./data/europe_locations.db')
   # Read the 'locations' table into a DataFrame
-  locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
+  locations_df = pd.read_sql('SELECT * FROM locations where population > 0 limit 5', conn)
   # Close the connection
   conn.close()
   for index,row in locations_df.iterrows():
-    #time.sleep(1.5)#To prevent the API from being blocked
+   
     print('Process: '+row['name'],flush=True)
     latitude = float(row['latitude'])
     longitude = float(row['longitude'])
@@ -43,6 +42,8 @@ if __name__ == "__main__":
       data = remove_outside_data(merged_df)
       #extended_df = extend_df(data)
       full_data = pd.concat([full_data, data], ignore_index=True)
+      if index == 3:
+        raise Exception("Test error save file on pipeline")
     except Exception as e:
       #traceback.print_exc()
       #Save the error to the database

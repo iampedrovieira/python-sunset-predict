@@ -39,8 +39,7 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
     f"&timezone={timezone}"
     f"&model=icon"  # Specify the DWD ICON model
    )
-  for i in range(5):
-    
+  for i in range(10):
     try:
       response = requests.get(API_URL,timeout=30)
       if response.status_code == 200:
@@ -98,7 +97,7 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
       else:
         raise Exception(f"Failed to retrieve data. Status code: {response.status_code}")      
     except Exception as e:
-      print('Failed to retrieve data. Retrying...',flush=True)
+      print('Failed to retrieve data. Retrying...' + str(i+1)+'/10',flush=True)
       print('Delaying for 5 seconds...',flush=True)
       time.sleep(5)
       
