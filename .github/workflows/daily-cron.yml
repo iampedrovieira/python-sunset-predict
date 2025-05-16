@@ -75,7 +75,7 @@ jobs:
           git commit -m "Test Commit submodule $(date)"
           #Push changes to the branch
           git push origin main
-          cd ../
+          cd ../../../
           git submodule sync
           git add .gitmodules my-python-project/src/data
           git commit -m "Sync submodule configuration to track main branch"
