@@ -14,7 +14,7 @@ import sys
 
 import pandas as pd
 if __name__ == "__main__":
-  
+  erro_file_name = "error_"+str(datetime.now().strftime("%Y-%m-%d_%H-%M"))+".db"
   full_data = pd.DataFrame()
   #Connect to the SQLite database
   conn = sqlite3.connect('./data/europe_locations.db')
@@ -48,7 +48,7 @@ if __name__ == "__main__":
       #traceback.print_exc()
       #Save the error to the database
       print('error: ' + str(e),flush=True)
-      conn = create_connection(f'./data/errors.db')
+      conn = create_connection(f'./data/'+error_file_name)
       error_df = pd.DataFrame({"error": [str(e)], "timestamp": [pd.Timestamp.now()]})
       error_df.to_sql('error_log', conn, if_exists="append", index=False)
       close_connection(conn)
