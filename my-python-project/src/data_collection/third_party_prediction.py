@@ -33,7 +33,7 @@ def get_prediction_from_third_party_api(
   headers = {
     "x-api-key": API_KEY
   }
-  response = requests.get(API_URL, headers=headers, params=params)
+  response = requests.get(API_URL, headers=headers, params=params,timeout=10)
   # Check if the request was successful
   if response.status_code == 200:
     data = response.json()

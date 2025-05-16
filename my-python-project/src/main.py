@@ -24,8 +24,8 @@ if __name__ == "__main__":
   # Close the connection
   conn.close()
   for index,row in locations_df.iterrows():
-    time.sleep(1.5)#To prevent the API from being blocked
-    print('Process: '+row['name'])
+    #time.sleep(1.5)#To prevent the API from being blocked
+    print('Process: '+row['name'],flush=True)
     latitude = float(row['latitude'])
     longitude = float(row['longitude'])
     timezone = row['timezone']
@@ -36,9 +36,9 @@ if __name__ == "__main__":
       forecast_data = collect_forecast_data(latitude, longitude, start_date, end_date, timezone)
       air_quality_data = get_air_quality_data(latitude, longitude, start_date, end_date,timezone)
       solar_angle_data = calculate_solar_angle(latitude, longitude, start_date, end_date, timezone)
-      third_party_data = get_prediction_from_third_party_api(latitude, longitude, timezone)
+      #third_party_data = get_prediction_from_third_party_api(latitude, longitude, timezone)
       #Create a "mock" third party data
-      #third_party_data = pd.DataFrame({"time": pd.date_range(start=start_date, end=end_date, freq='10min'), "third_party_prediction": [0]*len(pd.date_range(start=start_date, end=end_date, freq='10min'))})
+      third_party_data = pd.DataFrame({"time": pd.date_range(start=start_date, end=end_date, freq='10min'), "third_party_prediction": [0]*len(pd.date_range(start=start_date, end=end_date, freq='10min'))})
       merged_df = merge_data_by_time(forecast_data, air_quality_data, solar_angle_data, third_party_data)                        
       data = remove_outside_data(merged_df)
       #extended_df = extend_df(data)

@@ -39,7 +39,7 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
     f"&timezone={timezone}"
     f"&model=icon"  # Specify the DWD ICON model
    )
-  response = requests.get(API_URL)
+  response = requests.get(API_URL,timeout=10)
   if response.status_code == 200:
     data = response.json()
     hourly_data_forecast_data = []

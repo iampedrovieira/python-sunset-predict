@@ -29,7 +29,7 @@ def get_air_quality_data(latitude: float, longitude: float, start_date: str, end
     "&hourly=pm10,pm2_5,aerosol_optical_depth,european_aqi,nitrogen_dioxide,ozone"
     )
   
-  response = requests.get(api_url)
+  response = requests.get(api_url,timeout=10)
   data = response.json()
   hourly_air_quality_data = []
   if response.status_code == 200:
