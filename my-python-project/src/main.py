@@ -46,6 +46,7 @@ if __name__ == "__main__":
     except Exception as e:
       #traceback.print_exc()
       #Save the error to the database
+      print('error: ' + str(e),flush=True)
       conn = create_connection(f'./data/errors.db')
       error_df = pd.DataFrame({"error": [str(e)], "timestamp": [pd.Timestamp.now()]})
       error_df.to_sql('error_log', conn, if_exists="append", index=False)
