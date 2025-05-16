@@ -1,4 +1,4 @@
 [submodule "my-python-project/src/data"]
   path = my-python-project/src/data
   url = https://github.com/iampedrovieira/sunset-data-folder.git
-
+  branch = main
