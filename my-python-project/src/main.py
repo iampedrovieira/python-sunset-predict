@@ -14,7 +14,7 @@ import sys
 
 import pandas as pd
 if __name__ == "__main__":
-  erro_file_name = "error_"+str(datetime.now().strftime("%Y-%m-%d_%H-%M"))+".db"
+  error_file_name = "error_"+str(datetime.now().strftime("%Y-%m-%d_%H-%M"))+".db"
   full_data = pd.DataFrame()
   #Connect to the SQLite database
   conn = sqlite3.connect('./data/europe_locations.db')
