@@ -77,3 +77,6 @@ jobs:
           git push origin main
           cd ../
           git submodule sync
+          git add .gitmodules my-python-project/src/data
+          git commit -m "Sync submodule configuration to track main branch"
+          git push origin main
