@@ -61,12 +61,12 @@ jobs:
         env:
           GH_PAT_SUNSET: ${{ secrets.GH_PAT_SUNSET }}
         run: |
-          git submodule sync
+          
           cd my-python-project/src/data/
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           # Ensure we are on a branch (e.g., 'main')
-          git checkout main || git checkout -b main
+          #git checkout main || git checkout -b main
           git remote set-url origin https://x-access-token:${GH_PAT_SUNSET}@github.com/iampedrovieira/sunset-data-folder.git
           # Pull the latest changes from the remote branch
           #git pull origin main --rebase
@@ -74,3 +74,5 @@ jobs:
           git commit -m "Test Commit submodule $(date)"
           #Push changes to the branch
           git push origin main
+          cd ../
+          git submodule sync
