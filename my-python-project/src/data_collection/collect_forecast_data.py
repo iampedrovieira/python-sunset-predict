@@ -53,8 +53,8 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
           shortwave_radiation_sum = daily_data['shortwave_radiation_sum'][i]
           for j in range(len(data['hourly']['time'])):
             # Extract hourly data
-            time = data['hourly']['time'][j]
-            if time[:10] != processing_day:
+            data_time = data['hourly']['time'][j]
+            if data_time[:10] != processing_day:
               continue
 
             cloud_cover = data['hourly']['cloud_cover'][j]
@@ -73,7 +73,7 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
 
             # Create a structured dictionary to return
             final_data = {
-              "time": time,
+              "time": data_time,
               "latitude": lat,
               "longitude": long,
               "shortwave_radiation_sum": shortwave_radiation_sum,
