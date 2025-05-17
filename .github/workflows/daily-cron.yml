@@ -61,9 +61,7 @@ jobs:
         env:
           GH_PAT_SUNSET: ${{ secrets.GH_PAT_SUNSET }}
         run: |
-          git status
           cd my-python-project/src/data/
-          git status
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           # Ensure we are on a branch (e.g., 'main')
@@ -72,7 +70,7 @@ jobs:
           # Pull the latest changes from the remote branch
           #git pull origin main --rebase
           git add .
-          git commit -m "Test Commit submodule $(date)"
+          git commit -m "Data extraction $(date)"
           #Push changes to the branch
           git push origin main
           cd ../../../

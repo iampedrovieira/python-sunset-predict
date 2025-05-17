@@ -19,7 +19,7 @@ if __name__ == "__main__":
   #Connect to the SQLite database
   conn = sqlite3.connect('./data/europe_locations.db')
   # Read the 'locations' table into a DataFrame
-  locations_df = pd.read_sql('SELECT * FROM locations where population > 0 limit 5', conn)
+  locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
   for index,row in locations_df.iterrows():
