@@ -76,6 +76,9 @@ jobs:
           #Push changes to the branch
           git push origin main
           cd ../../../
+          #Sync submodule configuration
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
           git submodule sync
           git add .gitmodules my-python-project/src/data
           git commit -m "Sync submodule configuration to track main branch"
