@@ -2,8 +2,8 @@
 name: Daily Python Script
 
 on:
-  schedule:
-    - cron: '10 15 * * *'
+  #schedule:
+  #  - cron: '10 15 * * *'
   workflow_dispatch:
 
 jobs:
