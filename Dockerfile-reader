@@ -14,11 +14,8 @@ WORKDIR /app
 # Copy code
 COPY ./Third-party-img-read/ /app
 
-CMD ["ls", "-l", "/app/input-files/"]
-CMD ["ls", "-l", "/app/"]
-
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run script
-CMD ["python", "main.py"]
+CMD ls -l /app/input-files/ && ls -l /app/ && python main.py
