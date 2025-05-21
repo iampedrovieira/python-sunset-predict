@@ -18,4 +18,4 @@ COPY ./Third-party-img-read/ /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run script
-CMD ls -l /app/input-files/ && ls -l /app/ && python main.py
+CMD ["python", "main.py"]
