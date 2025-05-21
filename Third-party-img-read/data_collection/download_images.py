@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 def extract_img_urls(url:str)-> list:
-  BASE_URL = os.getenv("BASE_URL")
+  BASE_URL = os.getenv("THIRD_PARTY_SITE")
   
   response = requests.get(url)
   soup = BeautifulSoup(response.text, 'html.parser')

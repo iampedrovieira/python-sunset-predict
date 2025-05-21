@@ -1,0 +1,46 @@
+name: Test Image Reader
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    if: github.actor != 'github-actions'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT_SUNSET }}
+          submodules: 'recursive'
+
+      - name: Move required files
+        run: |
+          mkdir -p third-party-img-read/input-files/
+          mv my-python-project/src/data/europe_locations.db third-party-img-read/input-files/
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: docker build -t read-img -f Dockerfile-reader .
+
+      - name: Run script
+        env:
+          THIRD_PARTY_SITE: ${{ secrets.THIRD_PARTY_SITE }}
+          IMG_SRC_PATH_SUNSET: ${{ secrets.IMG_SRC_PATH_SUNSET }}
+          IMG_SRC_PATH_SUNRISE: ${{ secrets.IMG_SRC_PATH_SUNRISE }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: |
+          docker run --rm \
+          -e PYTHONUNBUFFERED=1 \
+          -e THIRD_PARTY_SITE=$THIRD_PARTY_SITE \
+          -e IMG_SRC_PATH_SUNSET=$IMG_SRC_PATH_SUNSET \
+          -e IMG_SRC_PATH_SUNRISE=$IMG_SRC_PATH_SUNRISE \
+          -v ${{ github.workspace }}/temp:/app/output read-img
+      
+      - name: Upload temp directory as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: temp-output
+          path: temp/

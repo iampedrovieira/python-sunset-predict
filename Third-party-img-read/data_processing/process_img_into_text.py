@@ -58,3 +58,43 @@ def extract_quality_data(image, lat_min, lat_max, lon_min, lon_max, step=10):
       })
 
   return data
+
+def extract_quality_at_point(image, lat_min, lat_max, lon_min, lon_max, target_lat, target_lon):
+  """
+  Extract sunset quality data for a specific latitude and longitude.
+
+  Args:
+      image (PIL.Image): The input image.
+      lat_min (float): Minimum latitude of the map.
+      lat_max (float): Maximum latitude of the map.
+      lon_min (float): Minimum longitude of the map.
+      lon_max (float): Maximum longitude of the map.
+      target_lat (float): The latitude to extract data for.
+      target_lon (float): The longitude to extract data for.
+
+  Returns:
+      dict: A dictionary containing the latitude, longitude, and sunset quality percent.
+  """
+  img = image.convert("RGB")
+  width, height = img.size
+
+  # Calculate the pixel coordinates corresponding to the target latitude and longitude
+  y = int((lat_max - target_lat) / (lat_max - lat_min) * height)
+  x = int((target_lon - lon_min) / (lon_max - lon_min) * width)
+
+  # Ensure the pixel coordinates are within the image bounds
+  y = max(0, min(height - 1, y))
+  x = max(0, min(width - 1, x))
+
+  # Get the RGB value of the pixel
+  rgb = img.getpixel((x, y))
+
+  # Calculate the sunset quality percentage
+  sunset_quality_percent = rgb_to_quality(rgb)
+
+  # Return the data as a dictionary
+  return {
+      "latitude": round(target_lat, 2),
+      "longitude": round(target_lon, 2),
+      "sunset_quality_percent": sunset_quality_percent
+}
