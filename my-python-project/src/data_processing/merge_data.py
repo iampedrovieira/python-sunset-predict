@@ -32,6 +32,23 @@ def merge_data_by_time(forecast_raw, air_quality_raw, solar_angle_raw,third_part
   solar_angle_df = pd.DataFrame(solar_angle_raw)
   solar_angle_df.reset_index(inplace=True)
   solar_angle_df.rename(columns={"index": "time"}, inplace=True)
+  #Classify the solar angle data
+  events = []
+  for i in range(len(solar_angle_df)):
+    if i == 0:
+      # First row, cannot determine trend
+      events.append("unknown")
+    else:
+      prev_angle = solar_angle_df.iloc[i - 1]['apparent_elevation']
+      curr_angle = solar_angle_df.iloc[i]['apparent_elevation']
+      if curr_angle > prev_angle:
+          events.append("sunrise")
+      else:
+          events.append("sunset")
+  for i in range(len(events) - 1):
+    if events[i] == "unknown" and events[i + 1] == "sunrise":
+      events[i] = "sunrise"
+  solar_angle_df['event'] = events
   solar_angle_df['time'] = pd.to_datetime(solar_angle_df['time']).dt.tz_localize(None)
 
   merged_df = pd.merge(forecast_df, air_quality_df, on="time", how="inner")
