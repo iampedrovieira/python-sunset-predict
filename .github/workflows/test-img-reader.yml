@@ -14,20 +14,20 @@ jobs:
           token: ${{ secrets.GH_PAT_SUNSET }}
           submodules: 'recursive'
 
-      - name: DEBUG before
-        run: | 
-          ls ${{ github.workspace }}/my-python-project/src/data/
-          ls my-python-project/src/data/
+      - name: Create target directory if it doesn't exist
+        run: |
+          mkdir -p ${{ github.workspace }}/third-party-img-read/input-files/
   
       - name: Move required files
         run: |
-          
+          echo "Attempting to move the file..."
           mv ${{ github.workspace }}/my-python-project/src/data/europe_locations.db ${{ github.workspace }}/third-party-img-read/input-files/
-      
-      - name: DEBUG after
-        run: | 
-          ls ${{ github.workspace }}/third-party-img-read/input-files/
-          ls /third-party-img-read/input-files/
+          echo "File moved successfully."
+
+      - name: DEBUG after move
+        run: |
+          echo "Checking target directory contents:"
+          ls -l ${{ github.workspace }}/third-party-img-read/input-files/
   
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
