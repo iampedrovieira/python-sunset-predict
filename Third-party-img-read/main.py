@@ -63,7 +63,7 @@ if __name__ == "__main__":
         #The timezone is on UTC
         df["time"] = pd.to_datetime(df["time"]).dt.tz_convert("UTC")
         full_extraction_df = pd.concat([full_extraction_df, df], ignore_index=True)
-        break
+        
       
   #Save dataframe on SQLITE DB
   conn = create_connection(f'./output/3PARTYTEST.db')
