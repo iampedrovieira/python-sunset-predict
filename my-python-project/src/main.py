@@ -32,7 +32,7 @@ if __name__ == "__main__":
   print('=====================',flush=True)
   print(print(os.listdir('./data')),flush=True)
   print('=====================',flush=True)
-  conn = create_connection("./input/3PARTYTEST.db")
+  conn = create_connection("./3PARTYTEST.db")
   #The dataset is small, so we can use the whole dataset and filter it later
   img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
   # Ensure the 'time' column is in datetime format
