@@ -46,7 +46,12 @@ jobs:
           -e IMG_SRC_PATH_SUNSET=$IMG_SRC_PATH_SUNSET \
           -e IMG_SRC_PATH_SUNRISE=$IMG_SRC_PATH_SUNRISE \
           -v ${{ github.workspace }}/temp:/app/output read-img
-
+      - name: Debug output
+        run: |
+          echo "Contents of the output directory:"
+          ls -l ${{ github.workspace }}/temp
+          echo "Contents of the input directory:"
+          ls -l ${{ github.workspace }}/Third-party-img-read/input-files/
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .
         
