@@ -34,35 +34,40 @@ if __name__ == "__main__":
     img_src_urls = extract_img_urls(url)
     print(f"Found {len(img_src_urls)} images for {extraction_type} extraction.", flush=True)
     for img_src in img_src_urls:
-      print(f"Processing img...",flush=True)
-      image = download_img(img_src)
-      metadata = extract_forecast_metadata(image)
-      lat_min, lat_max, lon_min, lon_max = detect_map_bounds(image)
-      hour = int(metadata["valid_str"][:2])
-      dt = datetime.strptime(metadata["valid_str"][3:], "%d%b%Y") 
-      parsed_time = datetime(dt.year, dt.month, dt.day, hour).isoformat() + "Z"
-      for index,row in locations_df.iterrows():
-        print('Process: '+row['name'],flush=True)
-        latitude = float(row['latitude'])
-        longitude = float(row['longitude'])
-        #Check if the location is inside the map bounds
-        if latitude < lat_min or latitude > lat_max or longitude < lon_min or longitude > lon_max:
-          print(f"Location {row['name']} is outside the map bounds. Skipping this location.",flush=True)
-          continue
-        
-        result = {
-          "valid_at": parsed_time,
-          "data": extract_quality_at_point(image, lat_min, lat_max, lon_min,lon_max, latitude, longitude)
-        }
-        df = pd.DataFrame([result["data"]]) 
-        df["time"] = result["valid_at"]
-        df["latitude"] = df["latitude"].astype(float)
-        df["longitude"] = df["longitude"].astype(float)
-        df["sunset_quality_percent"] = df["sunset_quality_percent"].astype(float)
-        df["type"] = extraction_type
-        #The timezone is on UTC
-        df["time"] = pd.to_datetime(df["time"]).dt.tz_convert("UTC")
-        full_extraction_df = pd.concat([full_extraction_df, df], ignore_index=True)
+      try:
+        print(f"Processing img...",flush=True)
+        image = download_img(img_src)
+        metadata = extract_forecast_metadata(image)
+        lat_min, lat_max, lon_min, lon_max = detect_map_bounds(image)
+        hour = int(metadata["valid_str"][:2])
+        dt = datetime.strptime(metadata["valid_str"][3:], "%d%b%Y") 
+        parsed_time = datetime(dt.year, dt.month, dt.day, hour).isoformat() + "Z"
+        for index,row in locations_df.iterrows():
+          print('Process: '+row['name'],flush=True)
+          latitude = float(row['latitude'])
+          longitude = float(row['longitude'])
+          #Check if the location is inside the map bounds
+          if latitude < lat_min or latitude > lat_max or longitude < lon_min or longitude > lon_max:
+            print(f"Location {row['name']} is outside the map bounds. Skipping this location.",flush=True)
+            continue
+          
+          result = {
+            "valid_at": parsed_time,
+            "data": extract_quality_at_point(image, lat_min, lat_max, lon_min,lon_max, latitude, longitude)
+          }
+          df = pd.DataFrame([result["data"]]) 
+          df["time"] = result["valid_at"]
+          df["latitude"] = df["latitude"].astype(float)
+          df["longitude"] = df["longitude"].astype(float)
+          df["sunset_quality_percent"] = df["sunset_quality_percent"].astype(float)
+          df["type"] = extraction_type
+          #The timezone is on UTC
+          df["time"] = pd.to_datetime(df["time"]).dt.tz_convert("UTC")
+          full_extraction_df = pd.concat([full_extraction_df, df], ignore_index=True)
+      except Exception as e:
+        print(f"Error processing image {img_src}: {e}", flush=True)
+        continue
+      
         
       
   #Save dataframe on SQLITE DB
