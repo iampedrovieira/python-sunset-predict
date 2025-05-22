@@ -25,6 +25,12 @@ if __name__ == "__main__":
   # Close the connection
   conn.close()
   conn = create_connection("./3PARTYTEST.db")
+  
+  cursor = conn.cursor()
+  cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+  tables = cursor.fetchall()
+  print("Tables in the database:", tables)
+  conn.close()
   #The dataset is small, so we can use the whole dataset and filter it later
   img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
   # Ensure the 'time' column is in datetime format
