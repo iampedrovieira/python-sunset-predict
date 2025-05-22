@@ -9,8 +9,7 @@ COPY ./my-python-project/src/requirements.txt /app/src/
 # Ensure the data directory is copied
 COPY ./my-python-project/src/data /app/src/data
 COPY ./temp /app/src
-RUN ls -l 
-RUN ls -l /app/src/input
+
 # Install dependencies
 RUN pip install --upgrade pip
 # Install dependencies
