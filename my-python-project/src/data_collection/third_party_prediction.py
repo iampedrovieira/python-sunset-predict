@@ -71,7 +71,7 @@ def get_prediction_from_third_party_api(
         current_time = time_period_start
     
         while current_time <= time_period_end:
-          rows.append({"time": current_time.strftime("%Y-%m-%d %H:%M:%S"), "third_party_prediction": quality})
+          rows.append({"time": current_time.strftime("%Y-%m-%d %H:%M:%S"), "api_prediction": quality})
           current_time += timedelta(minutes=10)  # Increment by 10 minutes
     # Check if rows is empty
     if not rows:

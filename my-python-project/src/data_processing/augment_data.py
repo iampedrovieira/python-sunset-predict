@@ -2,6 +2,10 @@
 # Add a hash column with dataframe data
 import pandas as pd
 import hashlib
+
+
+#def img_prediction_augmentation(df: pd.DataFrame, lat:float,lng:float) -> pd.DataFrame:
+    
 def hash_row(row):
   """
   Hash a row of the DataFrame.

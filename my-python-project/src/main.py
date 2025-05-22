@@ -22,6 +22,13 @@ if __name__ == "__main__":
   locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
+  
+  conn = create_connection("../../temp/3PARTYTEST.db")
+  #The dataset is small, so we can use the whole dataset and filter it later
+  img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
+  # Ensure the 'time' column is in datetime format
+  img_prediction_df['time'] = pd.to_datetime(img_prediction_df['time'])
+
   for index,row in locations_df.iterrows():
    
     print('Process: '+row['name'],flush=True)
@@ -35,15 +42,32 @@ if __name__ == "__main__":
       forecast_data = collect_forecast_data(latitude, longitude, start_date, end_date, timezone)
       air_quality_data = get_air_quality_data(latitude, longitude, start_date, end_date,timezone)
       solar_angle_data = calculate_solar_angle(latitude, longitude, start_date, end_date, timezone)
-      third_party_data = get_prediction_from_third_party_api(latitude, longitude, timezone)
+      #third_party_data = get_prediction_from_third_party_api(latitude, longitude, timezone)
       #Create a "mock" third party data
-      #third_party_data = pd.DataFrame({"time": pd.date_range(start=start_date, end=end_date, freq='10min'), "third_party_prediction": [0]*len(pd.date_range(start=start_date, end=end_date, freq='10min'))})
-      merged_df = merge_data_by_time(forecast_data, air_quality_data, solar_angle_data, third_party_data)                        
+      third_party_data = pd.DataFrame({"time": pd.date_range(start=start_date, end=end_date, freq='10min'), "third_party_prediction": [0]*len(pd.date_range(start=start_date, end=end_date, freq='10min'))})
+      # Define a tolerance for latitude and longitude comparison
+      tolerance = 0.01
+      # Filter img_prediction_df using a tolerance
+      img_prediction_by_lat_lng_df = img_prediction_df[
+          (abs(img_prediction_df['latitude'] - latitude) <= tolerance) &
+          (abs(img_prediction_df['longitude'] - longitude) <= tolerance)
+      ]    
+      # Check if the DataFrame is empty
+      if img_prediction_by_lat_lng_df.empty:
+        print(f"No IMG predictions found for location",flush=True)
+        continue
+      img_prediction_by_lat_lng_df = img_prediction_by_lat_lng_df[['time','sunset_quality_percent','type']]
+      # Localize the 'time' column to UTC and convert to the desired timezone
+      img_prediction_by_lat_lng_df['time'] = img_prediction_by_lat_lng_df['time'].dt.tz_convert(timezone)      
+      # Remove the timezone information while keeping the datetime format
+      img_prediction_by_lat_lng_df['time'] = img_prediction_by_lat_lng_df['time'].dt.tz_localize(None)
+      merged_df = merge_data_by_time(forecast_data, air_quality_data, solar_angle_data, third_party_data,img_prediction_by_lat_lng_df)                        
       data = remove_outside_data(merged_df)
       #extended_df = extend_df(data)
       full_data = pd.concat([full_data, data], ignore_index=True)
+      
     except Exception as e:
-      #traceback.print_exc()
+      
       #Save the error to the database
       print('error: ' + str(e),flush=True)
       conn = create_connection(f'./data/'+error_file_name)
@@ -62,6 +86,7 @@ if __name__ == "__main__":
   if len(full_data) < 5000:
     print("Data is too small.")
     error_number = 0#Warning
+    
   conn = create_connection(f'./data/data-{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.db')
   full_data.to_sql('weather_data', conn, if_exists="append", index=False)
   close_connection(conn)
