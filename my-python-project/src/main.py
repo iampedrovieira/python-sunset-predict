@@ -11,6 +11,8 @@ import sqlite3
 import pandas as pd
 from datetime import datetime
 import sys
+import os
+
 
 import pandas as pd
 if __name__ == "__main__":
@@ -22,7 +24,14 @@ if __name__ == "__main__":
   locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
-  
+  print("Locations to process: ",flush=True)
+  print(os.listdir('./input'),flush=True)
+  print('=====================',flush=True)
+  print(os.listdir('./'),flush=True)
+  print('=====================',flush=True)
+  print(print(os.listdir('./data')),flush=True)
+  print('=====================',flush=True)
+  print(os.listdir('../'))  
   conn = create_connection("./input/3PARTYTEST.db")
   #The dataset is small, so we can use the whole dataset and filter it later
   img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
