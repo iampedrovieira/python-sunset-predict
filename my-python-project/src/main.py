@@ -24,14 +24,6 @@ if __name__ == "__main__":
   locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
- 
-  print("Locations to process: ",flush=True)
-  print(os.listdir('./'),flush=True)
-  print('=====================',flush=True)
-  print(os.listdir('../'))  
-  print('=====================',flush=True)
-  print(print(os.listdir('./data')),flush=True)
-  print('=====================',flush=True)
   conn = create_connection("./3PARTYTEST.db")
   #The dataset is small, so we can use the whole dataset and filter it later
   img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
