@@ -97,7 +97,7 @@ def collect_forecast_data(lat:float, long:float, start_date:str, end_date:str, t
       else:
         raise Exception(f"Failed to retrieve data. Status code: {response.status_code}")      
     except Exception as e:
-      print('Failed to retrieve data. Retrying...' + str(i+1)+'/10',flush=True)
+      print('Failed to retrieve Forecast data. Retrying...' + str(i+1)+'/10',flush=True)
       print('Delaying for 5 seconds...',flush=True)
       time.sleep(5)
       
