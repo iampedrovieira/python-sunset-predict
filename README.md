@@ -1,28 +1,59 @@
-NEXT STEPS
-Create a DB with locations to extract
-    - Lat
-    - Long
-    - Timezone
+# 🌅 Sunset & Sunrise Explorer
 
-IDEA
-   - Before workflow
-    - Run the feed
-    - Run the main to 100 rows and see if works good
-    - Test fails cases(api blocks)
-        - No data pipeline error
-        - Error but with some data ok (define a number 500/600 ok, lower the pipeline fails )
-    - Run the full data collector and see if is good
-    - Check if the API reset on midnight or 24 after block 
-   - WORKFLOW
-        - Copy the create volume to repo
-        - Commit the logs and data
-        - Output something to use on pipeline no know if the script end right or not
-    - Call the main.py between 4pm and 6pm
-        - Update the main.py script to save the data when get error, not only the error
-        - Call until get a error
-            - probably will be the Error: 400 - {"status":400,"code":204,"message":"Exceeded daily quota"}
-            - On pipeline i will get error only if there is any data
-    - Save da SQL lite db on data/
-    - After a week merge the data set and try to create a model
-    - Continue extract data
-    Notes: The data will be for today and next 2 days, so i can see i accuracy the third party is as the sunset is close.
+**Discover what makes sunsets *and* sunrises magical — with data!**  
+This project is a fun and educational deep dive into the beautiful relationship between weather conditions and the quality of sunsets and sunrises.
+
+---
+
+## ✨ Project Purpose
+
+This is a **non-commercial** project created purely **for fun and learning**. It’s an opportunity to explore new tools, build something meaningful, and gain insights into one of nature’s most beautiful daily events.
+
+---
+
+## 🔄 Workflow Overview
+
+### 🛰️ Data Extraction
+- Collects **weather data** from freely available public APIs.
+- Extracts **sunset and sunrise prediction** data from open third-party sources.
+
+### 🧹 Data Processing
+- Cleans and enriches the collected data.
+- Merges weather and sunset/sunrise data into a **single cohesive dataset**.
+
+### 📊 Analysis
+- Explores **what factors influence sunset and sunrise quality**.
+- Identifies patterns and **correlations between weather conditions** and light quality.
+
+---
+
+## 🛠️ Technologies Used
+
+- **Python** – Core language for data collection, processing, and analysis.
+- **SQLite** – Lightweight database to store and manage extracted data.
+- **Docker** – Containerizes the app for consistent performance across environments.
+- **GitHub Actions** – Automates the **daily data pipeline**, from fetching to processing.
+
+---
+
+## ⚙️ How It Works
+
+1. **Scheduled GitHub Action** runs the workflow daily.
+2. Retrieves **free and public** weather + sunset/sunrise data via APIs and web sources.
+3. Cleans and merges the data into a **central dataset**.
+4. Stores the data locally for ongoing analysis and insights.
+
+---
+
+## 🎯 Goals
+
+- Understand the **relationship between weather and sunset/sunrise quality**.
+- Deliver insights useful for **photographers, travelers, and nature lovers**.
+- Build a reliable, automated system for **continuous data exploration**.
+
+---
+
+## 📌 Note
+
+All APIs used are **free and public**, and **no data is behind a paywall**.  
+This project is **not monetized** — it exists purely to learn, experiment, and share joy in natural beauty. 🌄
