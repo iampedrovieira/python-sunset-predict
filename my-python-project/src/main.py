@@ -49,7 +49,7 @@ if __name__ == "__main__":
   else:
     print(f"Database file found at {db_path}")
   conn = create_connection("./test/3PARTYTEST.db")
-  quit(1)
+  
   cursor = conn.cursor()
   cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
   tables = cursor.fetchall()
