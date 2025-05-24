@@ -47,9 +47,6 @@ jobs:
           -e IMG_SRC_PATH_SUNRISE=$IMG_SRC_PATH_SUNRISE \
           -v ${{ github.workspace }}/temp:/app/output read-img
 
-      - name: Copy generated DB into source directory
-        run: |
-          cp ${{ github.workspace }}/temp/3PARTYTEST.db my-python-project/src/
       
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .
@@ -73,7 +70,9 @@ jobs:
           -e GEOKEY_USER=$GEOKEY_USER \
           -e GEOSEARCH_API_URL=$GEOSEARCH_API_URL \
           -e GEONEAR_API_URL=$GEONEAR_API_URL \
-          -v ${{ github.workspace }}/my-python-project:/app main-app
+          -v ${{ github.workspace }}/my-python-project:/app \
+          -v ${{ github.workspace }}/temp:/app/src \
+          main-app
         continue-on-error: true
       
       - name: Capture exit code
