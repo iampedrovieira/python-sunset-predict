@@ -24,7 +24,7 @@ if __name__ == "__main__":
   locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
-  conn = create_connection("./3PARTYTEST.db")
+  conn = create_connection("./temp/3PARTYTEST.db")
   
   cursor = conn.cursor()
   cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")

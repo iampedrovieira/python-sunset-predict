@@ -71,7 +71,7 @@ jobs:
           -e GEOSEARCH_API_URL=$GEOSEARCH_API_URL \
           -e GEONEAR_API_URL=$GEONEAR_API_URL \
           -v ${{ github.workspace }}/my-python-project:/app \
-          -v ${{ github.workspace }}/temp:/app/src \
+          -v ${{ github.workspace }}/temp:/app/temp \
           main-app
         continue-on-error: true
       

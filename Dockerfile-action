@@ -6,8 +6,6 @@ WORKDIR /app/src/
 
 # Copy the requirements file into the container
 COPY ./my-python-project/src/requirements.txt /app/src/
-# Ensure the data directory is copied
-COPY ./my-python-project/src/data /app/src/data
 
 # Install dependencies
 RUN pip install --upgrade pip
