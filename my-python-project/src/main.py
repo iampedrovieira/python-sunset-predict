@@ -34,7 +34,7 @@ if __name__ == "__main__":
       print(f"The directory '{directory_path}' does not exist.")
 
   # List the contents of the directory
-  directory_path = "./temp"
+  directory_path = "./test"
   if os.path.exists(directory_path):
       print(f"Contents of '{directory_path}':")
       print(os.listdir(directory_path))
@@ -43,12 +43,12 @@ if __name__ == "__main__":
   
   
   
-  db_path = "./temp/3PARTYTEST.db"
+  db_path = "./test/3PARTYTEST.db"
   if not os.path.exists(db_path):
     print(f"Database file not found at {db_path}")
   else:
     print(f"Database file found at {db_path}")
-  conn = create_connection("./temp/3PARTYTEST.db")
+  conn = create_connection("./test/3PARTYTEST.db")
   quit(1)
   cursor = conn.cursor()
   cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
