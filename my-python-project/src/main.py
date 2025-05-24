@@ -24,42 +24,13 @@ if __name__ == "__main__":
   locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
-  
-  # List the contents of the directory
-  directory_path = "./"
-  if os.path.exists(directory_path):
-      print(f"Contents of '{directory_path}':")
-      print(os.listdir(directory_path))
-  else:
-      print(f"The directory '{directory_path}' does not exist.")
-
-  # List the contents of the directory
-  directory_path = "./test"
-  if os.path.exists(directory_path):
-      print(f"Contents of '{directory_path}':")
-      print(os.listdir(directory_path))
-  else:
-      print(f"The directory '{directory_path}' does not exist.")
-  
-  
-  
-  db_path = "./test/3PARTYTEST.db"
-  if not os.path.exists(db_path):
-    print(f"Database file not found at {db_path}")
-  else:
-    print(f"Database file found at {db_path}")
   conn = create_connection("./test/3PARTYTEST.db")
-  
-  cursor = conn.cursor()
-  cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-  tables = cursor.fetchall()
-  print("Tables in the database:", tables)
-  conn.close()
   #The dataset is small, so we can use the whole dataset and filter it later
   img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
+  conn.close()
   # Ensure the 'time' column is in datetime format
   img_prediction_df['time'] = pd.to_datetime(img_prediction_df['time'])
-
+  
   for index,row in locations_df.iterrows():
    
     print('Process: '+row['name'],flush=True)
@@ -96,7 +67,8 @@ if __name__ == "__main__":
       data = remove_outside_data(merged_df)
       #extended_df = extend_df(data)
       full_data = pd.concat([full_data, data], ignore_index=True)
-      
+      if index == 2:
+        break
     except Exception as e:
       
       #Save the error to the database
