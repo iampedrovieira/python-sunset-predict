@@ -71,7 +71,7 @@ if __name__ == "__main__":
         
       
   #Save dataframe on SQLITE DB
-  conn = create_connection(f'./output/3PARTYTEST.db')
+  conn = create_connection(f'./output/3PARTY.db')
   full_extraction_df.to_sql('prediction', conn, if_exists="append", index=False)
   close_connection(conn)
   

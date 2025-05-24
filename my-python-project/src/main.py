@@ -16,6 +16,7 @@ import os
 
 import pandas as pd
 if __name__ == "__main__":
+  THIRD_PARTY_API_KEY_NUMBER = [1]
   error_file_name = "error_"+str(datetime.now().strftime("%Y-%m-%d_%H-%M"))+".db"
   full_data = pd.DataFrame()
   #Connect to the SQLite database
@@ -24,7 +25,7 @@ if __name__ == "__main__":
   locations_df = pd.read_sql('SELECT * FROM locations where population > 0', conn)
   # Close the connection
   conn.close()
-  conn = create_connection("./test/3PARTYTEST.db")
+  conn = create_connection("./temp/3PARTY.db")
   #The dataset is small, so we can use the whole dataset and filter it later
   img_prediction_df = pd.read_sql('SELECT * FROM prediction', conn)
   conn.close()
@@ -32,24 +33,20 @@ if __name__ == "__main__":
   img_prediction_df['time'] = pd.to_datetime(img_prediction_df['time'])
   
   for index,row in locations_df.iterrows():
-    print(index)
-    if index == 2:
-      print("Skipping the third location for testing purposes.", flush=True)
-      break
+    
     print('Process: '+row['name'],flush=True)
     latitude = float(row['latitude'])
     longitude = float(row['longitude'])
     timezone = row['timezone']
     start_date = pd.Timestamp.now().strftime('%Y-%m-%d')
     end_date = (pd.Timestamp.now() + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
-    #timezone = "Europe/Copenhagen"
     try:
       forecast_data = collect_forecast_data(latitude, longitude, start_date, end_date, timezone)
       air_quality_data = get_air_quality_data(latitude, longitude, start_date, end_date,timezone)
       solar_angle_data = calculate_solar_angle(latitude, longitude, start_date, end_date, timezone)
-      #third_party_data = get_prediction_from_third_party_api(latitude, longitude, timezone)
+      third_party_data = get_prediction_from_third_party_api(latitude, longitude, timezone,THIRD_PARTY_API_KEY_NUMBER)
       #Create a "mock" third party data
-      third_party_data = pd.DataFrame({"time": pd.date_range(start=start_date, end=end_date, freq='10min'), "third_party_prediction": [0]*len(pd.date_range(start=start_date, end=end_date, freq='10min'))})
+      #third_party_data = pd.DataFrame({"time": pd.date_range(start=start_date, end=end_date, freq='10min'), "third_party_prediction": [0]*len(pd.date_range(start=start_date, end=end_date, freq='10min'))})
       # Define a tolerance for latitude and longitude comparison
       tolerance = 0.01
       # Filter img_prediction_df using a tolerance
@@ -71,9 +68,6 @@ if __name__ == "__main__":
       #extended_df = extend_df(data)
       full_data = pd.concat([full_data, data], ignore_index=True)
     except Exception as e:
-      # Print the full traceback
-      traceback.print_exc()
-      break
       #Save the error to the database
       print('error: ' + str(e),flush=True)
       conn = create_connection(f'./data/'+error_file_name)
@@ -83,6 +77,8 @@ if __name__ == "__main__":
       if '"status":400' in str(e):
         print(f"Bad Request (400) error detected for location {row['name']}. Skipping this location.")
         break
+      if "No more API keys available after" in str(e):
+       break
   
   error_number = 2 #Success
   if full_data.empty:

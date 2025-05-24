@@ -45,21 +45,17 @@ jobs:
           -e THIRD_PARTY_SITE=$THIRD_PARTY_SITE \
           -e IMG_SRC_PATH_SUNSET=$IMG_SRC_PATH_SUNSET \
           -e IMG_SRC_PATH_SUNRISE=$IMG_SRC_PATH_SUNRISE \
-          -v ${{ github.workspace }}/test:/app/output read-img
+          -v ${{ github.workspace }}/temp:/app/output read-img
 
       
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .
       
-      - name: Debug temp directory
-        run: ls -l ${{ github.workspace }}/test
-
-      - name: Debug temp directory
-        run: ls -l ./test
-      
       - name: Run script
         env:
-          THIRD_PARTY_API_KEY: ${{ secrets.THIRD_PARTY_API_KEY }}
+          THIRD_PARTY_API_KEY_1: ${{ secrets.THIRD_PARTY_API_KEY_1 }}
+          THIRD_PARTY_API_KEY_2: ${{ secrets.THIRD_PARTY_API_KEY_2 }}
+          THIRD_PARTY_API_KEY_3: ${{ secrets.THIRD_PARTY_API_KEY_3 }}
           THIRD_PARTY_URL: ${{ secrets.THIRD_PARTY_URL }}
           AIR_QUALITY_API_URL: ${{ secrets.AIR_QUALITY_API_URL }}
           FORECAST_API_URL: ${{ secrets.FORECAST_API_URL }}
@@ -77,7 +73,7 @@ jobs:
           -e GEOSEARCH_API_URL=$GEOSEARCH_API_URL \
           -e GEONEAR_API_URL=$GEONEAR_API_URL \
           -v ${{ github.workspace }}/my-python-project/src:/app/src \
-          -v ${{ github.workspace }}/test:/app/src/test \
+          -v ${{ github.workspace }}/temp:/app/src/temp \
           main-app
         continue-on-error: true
       
