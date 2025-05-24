@@ -32,7 +32,10 @@ if __name__ == "__main__":
   img_prediction_df['time'] = pd.to_datetime(img_prediction_df['time'])
   
   for index,row in locations_df.iterrows():
-   
+    print(index)
+    if index == 2:
+      print("Skipping the third location for testing purposes.", flush=True)
+      break
     print('Process: '+row['name'],flush=True)
     latitude = float(row['latitude'])
     longitude = float(row['longitude'])
@@ -67,10 +70,10 @@ if __name__ == "__main__":
       data = remove_outside_data(merged_df)
       #extended_df = extend_df(data)
       full_data = pd.concat([full_data, data], ignore_index=True)
-      if index == 2:
-        break
     except Exception as e:
-      
+      # Print the full traceback
+      traceback.print_exc()
+      break
       #Save the error to the database
       print('error: ' + str(e),flush=True)
       conn = create_connection(f'./data/'+error_file_name)

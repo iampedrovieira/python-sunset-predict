@@ -65,3 +65,6 @@ pip-delete-this-directory.txt
 
 # Local environment variables
 .env
+
+#ingnore temp folder
+temp/
