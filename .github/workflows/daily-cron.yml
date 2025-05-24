@@ -50,7 +50,13 @@ jobs:
       
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .
-        
+      
+      - name: Debug temp directory
+        run: ls -l ${{ github.workspace }}/temp
+
+      - name: Debug temp directory
+        run: ls -l ./temp
+      
       - name: Run script
         env:
           THIRD_PARTY_API_KEY: ${{ secrets.THIRD_PARTY_API_KEY }}
