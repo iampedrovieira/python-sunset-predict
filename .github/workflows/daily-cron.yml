@@ -56,6 +56,9 @@ jobs:
           THIRD_PARTY_API_KEY_1: ${{ secrets.THIRD_PARTY_API_KEY_1 }}
           THIRD_PARTY_API_KEY_2: ${{ secrets.THIRD_PARTY_API_KEY_2 }}
           THIRD_PARTY_API_KEY_3: ${{ secrets.THIRD_PARTY_API_KEY_3 }}
+          THIRD_PARTY_API_KEY_4: ${{ secrets.THIRD_PARTY_API_KEY_4 }}
+          THIRD_PARTY_API_KEY_5: ${{ secrets.THIRD_PARTY_API_KEY_5 }}
+          THIRD_PARTY_API_KEY_6: ${{ secrets.THIRD_PARTY_API_KEY_6 }}
           THIRD_PARTY_URL: ${{ secrets.THIRD_PARTY_URL }}
           AIR_QUALITY_API_URL: ${{ secrets.AIR_QUALITY_API_URL }}
           FORECAST_API_URL: ${{ secrets.FORECAST_API_URL }}
@@ -68,6 +71,9 @@ jobs:
           -e THIRD_PARTY_API_KEY_1=$THIRD_PARTY_API_KEY_1 \
           -e THIRD_PARTY_API_KEY_2=$THIRD_PARTY_API_KEY_2 \
           -e THIRD_PARTY_API_KEY_3=$THIRD_PARTY_API_KEY_3 \
+          -e THIRD_PARTY_API_KEY_4=$THIRD_PARTY_API_KEY_4 \
+          -e THIRD_PARTY_API_KEY_5=$THIRD_PARTY_API_KEY_5 \
+          -e THIRD_PARTY_API_KEY_6=$THIRD_PARTY_API_KEY_6 \
           -e THIRD_PARTY_URL=$THIRD_PARTY_URL \
           -e AIR_QUALITY_API_URL=$AIR_QUALITY_API_URL \
           -e FORECAST_API_URL=$FORECAST_API_URL \
