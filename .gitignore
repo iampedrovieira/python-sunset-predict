@@ -65,6 +65,3 @@ pip-delete-this-directory.txt
 
 # Local environment variables
 .env
-
-#Ignore the temp folder to not commit the temp files
-temp/
