@@ -36,8 +36,8 @@ def get_prediction_from_third_party_api(
     API_KEY = os.getenv("THIRD_PARTY_API_KEY_"+str(i))
     
     if not API_KEY:
-      print(f"No more API keys available after {i-1}. Stopping the process.")
-      raise Exception(f"No more API keys available after {i-1}. Stopping the process.")
+      print(f"No more API keys available after {i}. Stopping the process.")
+      raise Exception(f"No more API keys available after {i}. Stopping the process.")
     headers = {
       "x-api-key": API_KEY
     }
