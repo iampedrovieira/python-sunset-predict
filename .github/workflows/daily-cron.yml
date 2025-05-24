@@ -65,9 +65,9 @@ jobs:
         run: | 
           docker run --rm \
           -e PYTHONUNBUFFERED=1 \
-          -e THIRD_PARTY_API_KEY=$THIRD_PARTY_API_KEY_1 \
-          -e THIRD_PARTY_API_KEY=$THIRD_PARTY_API_KEY_2 \
-          -e THIRD_PARTY_API_KEY=$THIRD_PARTY_API_KEY_3 \
+          -e THIRD_PARTY_API_KEY_1=$THIRD_PARTY_API_KEY_1 \
+          -e THIRD_PARTY_API_KEY_2=$THIRD_PARTY_API_KEY_2 \
+          -e THIRD_PARTY_API_KEY_3=$THIRD_PARTY_API_KEY_3 \
           -e THIRD_PARTY_URL=$THIRD_PARTY_URL \
           -e AIR_QUALITY_API_URL=$AIR_QUALITY_API_URL \
           -e FORECAST_API_URL=$FORECAST_API_URL \
