@@ -47,11 +47,9 @@ jobs:
           -e IMG_SRC_PATH_SUNRISE=$IMG_SRC_PATH_SUNRISE \
           -v ${{ github.workspace }}/temp:/app/output read-img
 
-      - name: Upload temp directory as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: temp-output
-          path: temp/
+      - name: Copy generated DB into source directory
+        run: |
+          cp ${{ github.workspace }}/temp/3PARTYTEST.db my-python-project/src/
       
       - name: Build Docker image
         run: docker build -t main-app -f Dockerfile-action .

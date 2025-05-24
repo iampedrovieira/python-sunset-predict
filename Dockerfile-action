@@ -8,7 +8,6 @@ WORKDIR /app/src/
 COPY ./my-python-project/src/requirements.txt /app/src/
 # Ensure the data directory is copied
 COPY ./my-python-project/src/data /app/src/data
-COPY ./temp/3PARTYTEST.db  /app/src
 
 # Install dependencies
 RUN pip install --upgrade pip
